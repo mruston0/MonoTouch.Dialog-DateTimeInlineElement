@@ -10,14 +10,13 @@ namespace MonoTouch.Dialog.Extensions
 	{
 		bool isPickerPresent = false;
 		UIViewElement datePickerContainer;
-		// We want to hide the DateSelected event in the base class since it is not being used in this implementation.
+		/* We want to hide and override the DateSelected event in the base class 
+		 * since it is not being used in this implementation. */
 		public new event Action DateSelected;
 
 		public DateTimeInlineElement(string caption, DateTime date)
 			: base(caption, date)
-		{
-			MinuteInterval = 5;
-		}
+		{	}
 
 		public override void Selected(DialogViewController dvc, UITableView tableView, NSIndexPath path)
 		{
@@ -38,7 +37,8 @@ namespace MonoTouch.Dialog.Extensions
 
 			TogglePicker(dvc, tableView, path);
 
-			tableView.DeselectRow(path, true);		// Deselect the row so the row highlint tint fades away.
+			// Deselect the row so the row highlint tint fades away.
+			tableView.DeselectRow(path, true);
 		}
 
 		private void TogglePicker(DialogViewController dvc, UITableView tableView, NSIndexPath path)
@@ -57,7 +57,8 @@ namespace MonoTouch.Dialog.Extensions
 					cell.DetailTextLabel.TextColor = UIColor.Gray;
 					section.Remove(datePickerContainer);
 					isPickerPresent = false;
-				} else
+				} 
+				else
 				{
 					// Show the picker.
 					cell.DetailTextLabel.TextColor = UIColor.Red;
@@ -68,6 +69,11 @@ namespace MonoTouch.Dialog.Extensions
 			}
 		}
 
+		/// <summary>
+		/// Locates this instance of this Element within a given DialogViewController.
+		/// </summary>
+		/// <returns>The Section instance and the index within that Section of this instance.</returns>
+		/// <param name="dvc">Dvc.</param>
 		private KeyValuePair<Section, int> GetMySectionAndIndex(DialogViewController dvc)
 		{
 			foreach(var section in dvc.Root)
